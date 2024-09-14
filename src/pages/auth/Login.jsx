@@ -1,10 +1,54 @@
-import React from "react";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { LoadingOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Flex } from "antd";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { authService } from "../../services/AuthService";
+import Cookies from "js-cookie";
+import { TOKEN } from "../../config/constant";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { userLoginAction } from "../../store/actions/userActions";
+
 const Login = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    const user = {
+      email: values.email,
+      password: values.password,
+    };
+    try {
+      setLoading(true);
+      setTimeout(async () => {
+        const result = await authService.loginService(user);
+        if (result.status === 200 && result.data.success) {
+          const data = result.data.data;
+          const token = data.token;
+          const user = {
+            id: data.id,
+            roleId: data.roleId,
+            email: data.email,
+            avatar: data.avatar,
+            username: data.username,
+          };
+          // store token to cookies
+          Cookies.set(TOKEN, token);
+          // dispatch user to reducer
+          dispatch(userLoginAction(user));
+          // push to homepage
+          navigate("/home");
+          // toast
+          toast.success(result.data.message);
+        } else {
+          toast.error(result.data.message);
+        }
+        // set loading
+        setLoading(false);
+      }, 800);
+    } catch (error) {
+      console.log("Login error: ", error);
+    }
   };
   return (
     <Form
@@ -46,6 +90,10 @@ const Login = () => {
             required: true,
             message: "Please input your Password!",
           },
+          {
+            min: 8,
+            message: "Min length is 8",
+          },
         ]}
       >
         <Input
@@ -56,11 +104,16 @@ const Login = () => {
       </Form.Item>
       <Form.Item>
         <Flex justify="flex-end" align="center">
-          <a href="">Forgot password</a>
+          <a href="#">Forgot password</a>
         </Flex>
       </Form.Item>
       <Form.Item>
-        <Button block type="primary" htmlType="submit">
+        <Button
+          block
+          type="primary"
+          htmlType="submit"
+          icon={loading ? <LoadingOutlined /> : ""}
+        >
           Log in
         </Button>
       </Form.Item>

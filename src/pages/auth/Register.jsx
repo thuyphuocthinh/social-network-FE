@@ -1,10 +1,55 @@
-import React from "react";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Flex } from "antd";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { LoadingOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
+import { Button, Form, Input } from "antd";
+import { NavLink, useNavigate } from "react-router-dom";
+import { authService } from "../../services/AuthService";
+import { TOKEN } from "../../config/constant";
+import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { userRegisterAction } from "../../store/actions/userActions";
+
 const Register = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    const user = {
+      email: values.email,
+      password: values.password,
+      username: values.username,
+    };
+    try {
+      setLoading(true);
+      setTimeout(async () => {
+        const result = await authService.registerService(user);
+        if (result.status === 200 && result.data.success) {
+          const data = result.data.data;
+          const token = data.token;
+          const user = {
+            id: data.id,
+            roleId: data.roleId,
+            email: data.email,
+            avatar: data.avatar,
+            username: data.username,
+          };
+          // store token to cookies
+          Cookies.set(TOKEN, token);
+          // dispatch user to reducer
+          dispatch(userRegisterAction(user));
+          // toast
+          toast.success(result.data.message);
+          // push to homepage
+          navigate("/home");
+        } else {
+          toast.error(result.data.message);
+        }
+        // set loading
+        setLoading(false);
+      }, 800);
+    } catch (error) {
+      console.log("Register error: ", error);
+    }
   };
   return (
     <Form
@@ -95,7 +140,12 @@ const Register = () => {
         />
       </Form.Item>
       <Form.Item>
-        <Button block type="primary" htmlType="submit">
+        <Button
+          block
+          type="primary"
+          htmlType="submit"
+          icon={loading ? <LoadingOutlined /> : ""}
+        >
           Sign up
         </Button>
       </Form.Item>
