@@ -1,0 +1,114 @@
+@import "../../Variable.scss";
+.header {
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    .header-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $pd-5 0;
+        .header-left {
+            width: 25%;
+            display: flex;
+            align-items: center;
+            gap: $gap-10;
+            .header-logo {
+                font-weight: $fw-bold-700;
+                font-size: $fs-25;
+            }
+            .header-search {
+                color: $color-black;
+                background-color: $bg-gray;
+                border: 1px solid $color-gray;
+                border-radius: $border-radius-50;
+                padding: $pd-7 0 $pd-7 $pd-10;
+                color: $color-gray-100;
+                width: 280px;
+                display: flex;
+                align-items: center;
+                input {
+                    outline: none;
+                    border: none;
+                    background-color: transparent;
+                    padding: 0 $pd-10;
+                    width: 100%;
+                }
+            }
+        }
+        .header-middle {
+            flex: 1;
+            width: 50%;
+            .header-list {
+                display: flex;
+                max-width: fit-content;
+                margin: 0 auto;
+                .header-item {
+                    .header-link {
+                        font-size: $fs-20;
+                        padding: $pd-7 0;
+                        display: block;
+                        width: 80px;
+                        text-align: center;
+                        border-radius: $border-radius-5;
+                        &:hover {
+                            background-color: $bg-gray;
+                        }
+                    }
+                }
+            }
+        }
+        .header-right {
+            width: 25%;
+            .header-list {
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                padding: 0;
+                margin: 0;
+                gap: $gap-10;
+                .header-item {
+                    width: 40px;
+                    height: 40px;
+                    background-color: $bg-gray;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: $border-radius-100;
+                    &:hover {
+                        background-color: $bg-gray-100;
+                        cursor: pointer;
+                    }
+                    .header-link {
+                        font-size: $fs-18;
+                        display: block;
+                        border-radius: $border-radius-5;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .header {
+        .header-container {
+            .header-left {
+                width: 50%;
+                .header-search {
+                    width: 40px;
+                    height: 40px;
+                    cursor: pointer;
+                    input {
+                        display: none;
+                    }
+                }
+            }
+            .header-right {
+                width: 50%;
+            }
+        }
+    }
+}

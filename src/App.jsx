@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-toastify/dist/ReactToastify.css";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes";
+import "./App.scss";
 
 function App() {
   return (

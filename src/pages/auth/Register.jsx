@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { LoadingOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { authService } from "../../services/AuthService";
-import { TOKEN } from "../../config/constant";
 import { toast } from "react-toastify";
-import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { userRegisterAction } from "../../store/actions/userActions";
+import { setToken } from "../../helpers/token";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -19,9 +18,10 @@ const Register = () => {
       password: values.password,
       username: values.username,
     };
-    try {
-      setLoading(true);
-      setTimeout(async () => {
+
+    setLoading(true);
+    setTimeout(async () => {
+      try {
         const result = await authService.registerService(user);
         if (result.status === 200 && result.data.success) {
           const data = result.data.data;
@@ -34,23 +34,23 @@ const Register = () => {
             username: data.username,
           };
           // store token to cookies
-          Cookies.set(TOKEN, token);
+          setToken(token);
           // dispatch user to reducer
           dispatch(userRegisterAction(user));
           // toast
           toast.success(result.data.message);
           // push to homepage
           navigate("/home");
-        } else {
-          toast.error(result.data.message);
         }
+      } catch (error) {
+        toast.error(error.data.message);
+      } finally {
         // set loading
         setLoading(false);
-      }, 800);
-    } catch (error) {
-      console.log("Register error: ", error);
-    }
+      }
+    }, 800);
   };
+
   return (
     <Form
       name="register"

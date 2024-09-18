@@ -1,52 +1,25 @@
-import axios from "axios";
-import Cookie from "js-cookie";
-import { TOKEN } from "../config/constant";
-
-const token = Cookie.get(TOKEN);
+import axiosInstance from "../config/axiosInterceptor";
 
 export class BaseService {
-  constructor() {}
+    constructor() {}
 
-  get(api) {
-    return axios.get(api, {
-      headers: {
-        Authorization: `BEARER ${token}`,
-      },
-    });
-  }
+    get(api) {
+        return axiosInstance.get(api);
+    }
 
-  post(api, data) {
-    return axios.post(api, data, {
-      headers: {
-        Authorization: `BEARER ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-  }
+    post(api, data) {
+        return axiosInstance.post(api, data);
+    }
 
-  put(api, data) {
-    return axios.put(api, data, {
-      headers: {
-        Authorization: `BEARER ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-  }
+    put(api, data) {
+        return axiosInstance.put(api, data);
+    }
 
-  patch(api, data) {
-    return axios.put(api, data, {
-      headers: {
-        Authorization: `BEARER ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-  }
+    patch(api, data) {
+        return axiosInstance.patch(api, data);
+    }
 
-  delete(api) {
-    return axios.delete(api, {
-      headers: {
-        Authorization: `BEARER ${token}`,
-      },
-    });
-  }
+    delete(api) {
+        return axiosInstance.delete(api);
+    }
 }

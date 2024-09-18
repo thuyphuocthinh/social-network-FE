@@ -1,11 +1,11 @@
-import React from "react";
 import "./AuthLayout.scss";
 import { Layout } from "antd";
 import { Navigate, Outlet } from "react-router-dom";
 const { Content, Sider } = Layout;
 
+// eslint-disable-next-line react/prop-types
 const AuthLayout = ({ isAuthenticated }) => {
-  if (isAuthenticated) {
+  if (isAuthenticated()) {
     return <Navigate to="/home" replace />;
   }
   return (

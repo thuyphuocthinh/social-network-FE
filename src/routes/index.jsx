@@ -7,6 +7,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Test from "../pages/home/test";
 import { TOKEN } from "../config/constant";
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import Profile from "../pages/profile/Profile";
 
 const getAccessToken = () => {
   return Cookies.get(TOKEN);
@@ -29,19 +30,27 @@ export const router = createBrowserRouter([
         path: "home",
         element: <Test />,
       },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
     ],
   },
   {
     path: "/auth",
-    element: <AuthLayout />, // Authentication will be handled inside AuthLayout
+    element: <AuthLayout isAuthenticated={isAuthenticated} />, // Authentication will be handled inside AuthLayout
     children: [
       {
+        index: true,
+        element: <Navigate to="/auth/login" />,
+      },
+      {
         path: "login",
-        element: isAuthenticated() ? <Navigate to="/home" /> : <Login />, // Redirect if already authenticated
+        element: <Login />, // Redirect if already authenticated
       },
       {
         path: "register",
-        element: isAuthenticated() ? <Navigate to="/home" /> : <Register />, // Same logic for register
+        element: <Register />, // Same logic for register
       },
     ],
   },

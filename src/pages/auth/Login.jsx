@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { LoadingOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Flex } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { authService } from "../../services/AuthService";
-import Cookies from "js-cookie";
-import { TOKEN } from "../../config/constant";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { userLoginAction } from "../../store/actions/userActions";
+import { setToken } from "../../helpers/token";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -18,9 +17,9 @@ const Login = () => {
       email: values.email,
       password: values.password,
     };
-    try {
-      setLoading(true);
-      setTimeout(async () => {
+    setLoading(true);
+    setTimeout(async () => {
+      try {
         const result = await authService.loginService(user);
         if (result.status === 200 && result.data.success) {
           const data = result.data.data;
@@ -33,22 +32,21 @@ const Login = () => {
             username: data.username,
           };
           // store token to cookies
-          Cookies.set(TOKEN, token);
+          setToken(token);
           // dispatch user to reducer
           dispatch(userLoginAction(user));
           // push to homepage
           navigate("/home");
           // toast
           toast.success(result.data.message);
-        } else {
-          toast.error(result.data.message);
         }
+      } catch (error) {
+        toast.error(error.data.message);
+      } finally {
         // set loading
         setLoading(false);
-      }, 800);
-    } catch (error) {
-      console.log("Login error: ", error);
-    }
+      }
+    }, 800);
   };
   return (
     <Form
