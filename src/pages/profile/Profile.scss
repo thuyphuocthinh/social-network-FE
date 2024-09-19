@@ -1,0 +1,72 @@
+@import "../../Variable.scss";
+.profile {
+    .profile-head {
+        background-color: $bg-white;
+        height: 520px;
+        box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.2);
+        margin-top: 50px;
+        .profile-head-container {
+            max-width: 950px;
+            width: 100%;
+            margin-top: 50px;
+            margin: 0 auto;
+            height: 100%;
+            .profile-head-cover {
+                background-color: $bg-gray;
+                height: 70%;
+                border-bottom-left-radius: $border-radius-10;
+                border-bottom-right-radius: $border-radius-10;
+            }
+            .profile-head-user {
+                display: flex;
+                height: 20%;
+                padding: 0 $pd-20;
+                .profile-avatar {
+                    width: 20%;
+                    position: relative;
+                    div {
+                        bottom: 80px;
+                        position: relative;
+                        width: 170px;
+                        height: 170px;
+                        margin: 0 auto;
+                        border-radius: $border-radius-100;
+                        background-color: $bg-gray;
+                        border: 5px solid $color-white;
+                    }
+                }
+                .profile-basic-info {
+                    width: 40%;
+                    flex: 1;
+                    h3 {
+                        margin-top: $mar-20;
+                        font-weight: $fw-bold-700;
+                    }
+                    p {
+                        color: $color-gray-100;
+                        font-weight: $fw-bold-500;
+                    }
+                }
+                .profile-actions {
+                    width: 40%;
+                    display: flex;
+                    padding-top: $pd-20;
+                    justify-content: flex-end;
+                    align-items: center;
+                    gap: $gap-10;
+                    .btn {
+                        padding-left: $pd-20;
+                        padding-right: $pd-20;
+                    }
+                    .btn-friends {
+                        background-color: $bg-gray;
+                    }
+                    .btn-message {
+                        background-color: $bg-blue;
+                        color: $color-white;
+                    }
+                }
+            }
+        }
+    }
+}
