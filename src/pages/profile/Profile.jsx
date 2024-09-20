@@ -1,10 +1,24 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import Header from "../../components/Home/Header";
 import "./Profile.scss";
-import { NavLink } from "react-router-dom";
-import Post from "../../components/Post/Post";
+import { useSearchParams } from "react-router-dom";
+import ProfilePostTab from "../../components/Profile/ProfilePostTab";
+import ProfileFriendsTab from "../../components/Profile/ProfileFriendsTab";
+import ProfileSettingsTab from "../../components/Profile/ProfileSettingsTab";
 
 export default function Profile() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [tabName, setTabName] = useState("posts");
+
+  useEffect(() => {
+    setSearchParams({ "tab": tabName });
+  }, []);
+
+  const handleChangeTab = (value) => {
+    setSearchParams({ "tab": value });
+    setTabName(value);
+  };
+
   return (
     <Fragment>
       <Header />
@@ -28,107 +42,43 @@ export default function Profile() {
             <div className="profile-head-tabs">
               <ul className="profile-tabs-list">
                 <li className="profile-tab-item">
-                  <span className="profile-tab-link active">Posts</span>
+                  <span
+                    className={`profile-tab-link ${
+                      tabName === "posts" ? "active" : ""
+                    }`}
+                    onClick={() => handleChangeTab("posts")}
+                  >
+                    Posts
+                  </span>
                 </li>
                 <li className="profile-tab-item">
-                  <span className="profile-tab-link">Friends</span>
+                  <span
+                    className={`profile-tab-link ${
+                      tabName === "friends" ? "active" : ""
+                    }`}
+                    onClick={() => handleChangeTab("friends")}
+                  >
+                    Friends
+                  </span>
+                </li>
+                <li className="profile-tab-item">
+                  <span
+                    className={`profile-tab-link ${
+                      tabName === "settings" ? "active" : ""
+                    }`}
+                    onClick={() => handleChangeTab("settings")}
+                  >
+                    Settings
+                  </span>
                 </li>
               </ul>
             </div>
           </div>
         </div>
         <div className="profile-body">
-          <div className="profile-friends">
-            <div className="profile-friends-container">
-              <div className="profile-friends-header">
-                <span>Friends</span>
-                <NavLink>See all friends</NavLink>
-              </div>
-              <div className="profile-friends-body">
-                <div className="profile-friends-item">
-                  <a className="profile-friends-link">
-                    <span className="profile-friends-avatar"></span>
-                    <span className="profile-friends-name">
-                      Thủy Phước Thịnh
-                    </span>
-                  </a>
-                </div>
-                <div className="profile-friends-item">
-                  <a className="profile-friends-link">
-                    <span className="profile-friends-avatar"></span>
-                    <span className="profile-friends-name">
-                      Thủy Phước Thịnh
-                    </span>
-                  </a>
-                </div>
-                <div className="profile-friends-item">
-                  <a className="profile-friends-link">
-                    <span className="profile-friends-avatar"></span>
-                    <span className="profile-friends-name">
-                      Thủy Phước Thịnh
-                    </span>
-                  </a>
-                </div>
-                <div className="profile-friends-item">
-                  <a className="profile-friends-link">
-                    <span className="profile-friends-avatar"></span>
-                    <span className="profile-friends-name">
-                      Thủy Phước Thịnh
-                    </span>
-                  </a>
-                </div>
-                <div className="profile-friends-item">
-                  <a className="profile-friends-link">
-                    <span className="profile-friends-avatar"></span>
-                    <span className="profile-friends-name">
-                      Thủy Phước Thịnh
-                    </span>
-                  </a>
-                </div>
-                <div className="profile-friends-item">
-                  <a className="profile-friends-link">
-                    <span className="profile-friends-avatar"></span>
-                    <span className="profile-friends-name">
-                      Thủy Phước Thịnh
-                    </span>
-                  </a>
-                </div>
-                <div className="profile-friends-item">
-                  <a className="profile-friends-link">
-                    <span className="profile-friends-avatar"></span>
-                    <span className="profile-friends-name">
-                      Thủy Phước Thịnh
-                    </span>
-                  </a>
-                </div>
-                <div className="profile-friends-item">
-                  <a className="profile-friends-link">
-                    <span className="profile-friends-avatar"></span>
-                    <span className="profile-friends-name">
-                      Thủy Phước Thịnh
-                    </span>
-                  </a>
-                </div>
-                <div className="profile-friends-item">
-                  <a className="profile-friends-link">
-                    <span className="profile-friends-avatar"></span>
-                    <span className="profile-friends-name">
-                      Thủy Phước Thịnh
-                    </span>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="profile-posts">
-            {/* create post component */}
-            {/* list of post-components */}
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-            <Post />
-          </div>
+          {tabName === "posts" && <ProfilePostTab />}
+          {tabName === "friends" && <ProfileFriendsTab />}
+          {tabName === "settings" && <ProfileSettingsTab />}
         </div>
       </div>
     </Fragment>

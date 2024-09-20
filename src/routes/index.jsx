@@ -8,7 +8,6 @@ import Test from "../pages/home/test";
 import { TOKEN } from "../config/constant";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Profile from "../pages/profile/Profile";
-
 const getAccessToken = () => {
   return Cookies.get(TOKEN);
 };
@@ -32,6 +31,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/profile",
+        // => /profile/:userId
         element: <Profile />,
       },
     ],
