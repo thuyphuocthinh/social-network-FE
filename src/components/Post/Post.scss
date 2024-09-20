@@ -1,0 +1,90 @@
+@import "../../Variable.scss";
+
+.post {
+    background-color: $bg-white;
+    border-radius: $border-radius-5;
+    box-shadow: 0px 0px 2px 0px rgba(0, 0, 0, 0.5);
+    border: 1px solid $color-white;
+    padding: $pd-15;
+    margin-bottom: $mar-15;
+    .post-container {
+        display: flex;
+        flex-direction: column;
+        .post-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .post-user {
+                display: flex;
+                align-items: center;
+                column-gap: $gap-5;
+                .post-user-avatar {
+                    display: block;
+                    width: 40px;
+                    height: 40px;
+                    background-color: $bg-gray-100;
+                    border-radius: $border-radius-100;
+                }
+                .post-user-info {
+                    display: flex;
+                    flex-direction: column;
+                    a {
+                        color: $color-black;
+                        font-weight: $fw-bold-500;
+                    }
+                    span {
+                        color: $color-gray-100;
+                        font-size: $fs-12;
+                    }
+                }
+            }
+            .post-header-actions {
+                font-size: $fs-20;
+                cursor: pointer;
+                span {
+                    display: flex;
+                    width: 40px;
+                    height: 40px;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: $border-radius-100;
+                    &:hover {
+                        background-color: $bg-gray;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+        .post-body {
+            flex: 1;
+            margin: $mar-15 0;
+        }
+        .post-footer {
+            display: flex;
+            flex-direction: column;
+            .post-footer-actions {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                div {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    width: 32%;
+                    column-gap: $gap-10;
+                    color: $bg-gray-100;
+                    text-align: center;
+                    cursor: pointer;
+                    padding: $pd-10 0;
+                    border-radius: $border-radius-10;
+                    &:hover {
+                        background-color: $bg-gray;
+                    }
+                    span {
+                        font-size: $fs-16;
+                    }
+                }
+            }
+        }
+    }
+}
