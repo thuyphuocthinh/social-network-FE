@@ -1,9 +1,13 @@
 import React, { Fragment, useEffect } from "react";
 import Post from "../../components/Post/Post";
 import { NavLink, useSearchParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { selectTabAction } from "../../store/actions/tabActions";
+import { PROFILE_TAB } from "../../config/constant";
 
 export default function ProfilePostTab() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useDispatch();
 
   return (
     <Fragment>
@@ -13,7 +17,8 @@ export default function ProfilePostTab() {
             <span>Friends</span>
             <NavLink
               onClick={() => {
-                setSearchParams({ tab: "friends" });
+                setSearchParams({ tab: PROFILE_TAB.FRIENDS });
+                dispatch(selectTabAction(PROFILE_TAB.FRIENDS));
               }}
             >
               See all friends

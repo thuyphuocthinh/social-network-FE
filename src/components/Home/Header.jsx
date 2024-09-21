@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -11,6 +11,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "./Header.scss";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { userLogoutAction } from "../../store/actions/userActions";
+import { removeToken } from "../../helpers/token";
+import { toast } from "react-toastify";
 
 library.add(faSearch, faHome, faUserFriends, faUser, faMessage, faList);
 
@@ -24,6 +28,20 @@ export default function Header() {
   const menuMobileIconRef = useRef(null);
   const accountIconRef = useRef(null);
   const menuAccountRef = useRef(null);
+  const userLogin = useSelector((state) => state.userReducer.userLogin);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.addEventListener("click", handleCloseSearchMobile);
+    window.addEventListener("click", handleCloseMenuMobile);
+    window.addEventListener("click", handleCLoseAccountMenu);
+    return () => {
+      removeEventListener("click", handleCloseSearchMobile);
+      removeEventListener("click", handleCloseMenuMobile);
+      removeEventListener("click", handleCLoseAccountMenu);
+    };
+  });
 
   const handleCloseSearchMobile = (e) => {
     const element = e.target;
@@ -65,18 +83,17 @@ export default function Header() {
     } else {
       if (e.target !== menuAccountRef.current) setShowAccount(false);
     }
-  }
-  
-  useEffect(() => {
-    window.addEventListener("click", handleCloseSearchMobile);
-    window.addEventListener("click", handleCloseMenuMobile);
-    window.addEventListener("click", handleCLoseAccountMenu);
-    return () => {
-      removeEventListener("click", handleCloseSearchMobile);
-      removeEventListener("click", handleCloseMenuMobile);
-      removeEventListener("click", handleCLoseAccountMenu);
-    };
-  });
+  };
+
+  const handleLogout = () => {
+    dispatch(userLogoutAction());
+    localStorage.clear();
+    removeToken();
+    navigate("/auth/login");
+    setTimeout(() => {
+      toast.success("Logout successfully");
+    }, 200);
+  };
 
   return (
     <div className="header">
@@ -126,7 +143,10 @@ export default function Header() {
           </div>
           <div className="header-right">
             <ul className="header-list">
-              <li className="header-item d-flex d-sm-none" ref={menuMobileIconRef}>
+              <li
+                className="header-item d-flex d-sm-none"
+                ref={menuMobileIconRef}
+              >
                 <NavLink className="header-link">
                   <FontAwesomeIcon icon="list" />
                 </NavLink>
@@ -158,22 +178,28 @@ export default function Header() {
                 <NavLink className="header-link">
                   <FontAwesomeIcon icon="user" />
                 </NavLink>
-                {
-                  showAccount && <div className="header-account" ref={menuAccountRef}>
+                {showAccount && (
+                  <div className="header-account" ref={menuAccountRef}>
                     <ul className="header-account-list">
                       <li className="header-account-item">
-                        <NavLink className="header-account-link">
+                        <NavLink
+                          className="header-account-link"
+                          to={`/profile/${userLogin.id}`}
+                        >
                           Profile
                         </NavLink>
                       </li>
-                      <li className="header-account-item">
+                      <li
+                        className="header-account-item"
+                        onClick={handleLogout}
+                      >
                         <NavLink className="header-account-link">
                           Logout
                         </NavLink>
                       </li>
                     </ul>
                   </div>
-                }
+                )}
               </li>
             </ul>
           </div>

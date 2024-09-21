@@ -1,0 +1,16 @@
+@import "../../Variable.scss";
+
+.profile-settings {
+    max-width: 500px;
+    width: 90%;
+    margin: 0 auto;
+    text-align: center;
+    .form {
+        h5 {
+            margin: $mar-10 0;
+        }
+        &.form-password {
+            margin-top: $mar-50;
+        }
+    }
+}

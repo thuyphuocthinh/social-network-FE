@@ -1,17 +1,47 @@
-import { USER_LOGIN, USER_REGISTER } from "../actionTypes/userActionTypes";
+import {
+  USER_DETAIL,
+  USER_LOGIN,
+  USER_LOGOUT,
+  USER_REGISTER,
+  USER_UPDATE,
+} from "../actionTypes/userActionTypes";
 
 const initialState = {
   isLoggedIn: false,
   userLogin: {},
+  userDetail: {},
 };
 
 export const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case (USER_LOGIN, USER_REGISTER): {
+    case USER_LOGIN:
+    case USER_REGISTER: {
       return {
         ...state,
         isLoggedIn: true,
         userLogin: action.payload,
+      };
+    }
+
+    case USER_LOGOUT: {
+      return {
+        ...state,
+        isLoggedIn: false,
+        userLogin: {},
+      };
+    }
+
+    case USER_UPDATE: {
+      return {
+        ...state,
+        userLogin: action.payload,
+      };
+    }
+
+    case USER_DETAIL: {
+      return {
+        ...state,
+        userDetail: action.payload,
       };
     }
 

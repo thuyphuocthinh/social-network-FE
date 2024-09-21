@@ -1,5 +1,5 @@
-import { getToken, removeToken } from "../helpers/token";
 import axiosInstance from "./axiosInstance";
+import { getToken, removeToken } from "../helpers/token";
 import { STATUS_CODE } from "./constant";
 
 axiosInstance.interceptors.request.use(

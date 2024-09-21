@@ -1,13 +1,12 @@
 import AuthLayout from "../layouts/clients/auth/AuthLayout";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
-import Error from "../pages/error/Error";
 import Cookies from "js-cookie";
 import ProtectedRoute from "./ProtectedRoute";
-import Test from "../pages/home/test";
 import { TOKEN } from "../config/constant";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import Profile from "../pages/profile/Profile";
+import Home from "../pages/home/Home";
 const getAccessToken = () => {
   return Cookies.get(TOKEN);
 };
@@ -23,14 +22,14 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Test />,
+        element: <Home />,
       },
       {
         path: "home",
-        element: <Test />,
+        element: <Home />,
       },
       {
-        path: "/profile",
+        path: "/profile/:userId",
         // => /profile/:userId
         element: <Profile />,
       },
@@ -56,6 +55,6 @@ export const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <Error />,
+    element: <Home />,
   },
 ]);

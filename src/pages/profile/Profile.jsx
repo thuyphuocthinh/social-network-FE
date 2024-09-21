@@ -1,22 +1,30 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 import Header from "../../components/Home/Header";
 import "./Profile.scss";
-import { useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import ProfilePostTab from "../../components/Profile/ProfilePostTab";
 import ProfileFriendsTab from "../../components/Profile/ProfileFriendsTab";
 import ProfileSettingsTab from "../../components/Profile/ProfileSettingsTab";
+import { useDispatch, useSelector } from "react-redux";
+import { selectTabAction } from "../../store/actions/tabActions";
+import { PROFILE_TAB } from "../../config/constant";
+import { userDetailAction } from "../../store/actions/userActions";
 
 export default function Profile() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [tabName, setTabName] = useState("posts");
-
+  const { userId } = useParams();
+  const dispatch = useDispatch();
+  const selectedTab = useSelector((state) => state.tabReducer.selectedTab);
+  const userDetail = useSelector(state => state.userReducer.userDetail);
+  console.log(userDetail);
+  
   useEffect(() => {
-    setSearchParams({ "tab": tabName });
+    dispatch(userDetailAction(userId));
   }, []);
 
   const handleChangeTab = (value) => {
-    setSearchParams({ "tab": value });
-    setTabName(value);
+    setSearchParams({ tab: value });
+    dispatch(selectTabAction(value));
   };
 
   return (
@@ -31,8 +39,8 @@ export default function Profile() {
                 <div></div>
               </div>
               <div className="profile-basic-info">
-                <h3>Thủy Phước Thịnh</h3>
-                <p>388 friends</p>
+                <h3>{userDetail?.username}</h3>
+                <p>{userDetail?.listFriends.length} friends</p>
               </div>
               <div className="profile-actions">
                 <button className="btn btn-friends">Friends</button>
@@ -44,7 +52,7 @@ export default function Profile() {
                 <li className="profile-tab-item">
                   <span
                     className={`profile-tab-link ${
-                      tabName === "posts" ? "active" : ""
+                      selectedTab === PROFILE_TAB.POST ? "active" : ""
                     }`}
                     onClick={() => handleChangeTab("posts")}
                   >
@@ -54,7 +62,7 @@ export default function Profile() {
                 <li className="profile-tab-item">
                   <span
                     className={`profile-tab-link ${
-                      tabName === "friends" ? "active" : ""
+                      selectedTab === PROFILE_TAB.FRIENDS ? "active" : ""
                     }`}
                     onClick={() => handleChangeTab("friends")}
                   >
@@ -64,7 +72,7 @@ export default function Profile() {
                 <li className="profile-tab-item">
                   <span
                     className={`profile-tab-link ${
-                      tabName === "settings" ? "active" : ""
+                      selectedTab === PROFILE_TAB.SETTINGS ? "active" : ""
                     }`}
                     onClick={() => handleChangeTab("settings")}
                   >
@@ -76,9 +84,9 @@ export default function Profile() {
           </div>
         </div>
         <div className="profile-body">
-          {tabName === "posts" && <ProfilePostTab />}
-          {tabName === "friends" && <ProfileFriendsTab />}
-          {tabName === "settings" && <ProfileSettingsTab />}
+          {selectedTab === PROFILE_TAB.POST && <ProfilePostTab />}
+          {selectedTab === PROFILE_TAB.FRIENDS && <ProfileFriendsTab />}
+          {selectedTab === PROFILE_TAB.SETTINGS && <ProfileSettingsTab />}
         </div>
       </div>
     </Fragment>
