@@ -1,4 +1,19 @@
 @import "../../Variable.scss";
+.save-upload-modal {
+    position: fixed;
+    top: 54px;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: $pd-10 $pd-15;
+    z-index: 40;
+    gap: $gap-10;
+    color: $color-white;
+}
+
 .profile {
     .profile-head {
         background-color: $bg-white;
@@ -11,11 +26,39 @@
             margin-top: 50px;
             margin: 0 auto;
             height: 100%;
+            z-index: 1;
             .profile-head-cover {
+                position: relative;
                 background-color: $bg-gray;
                 height: 65%;
-                border-bottom-left-radius: $border-radius-10;
                 border-bottom-right-radius: $border-radius-10;
+                border-bottom-left-radius: $border-radius-10;
+                cursor: pointer;
+                div[data-rmiz] {
+                    height: 100%;
+                }
+                div[data-rmiz-content] {
+                    height: 100%;
+                }
+                img {
+                    width: 100%;
+                    height: 100% !important;
+                    border-bottom-right-radius: $border-radius-10;
+                    border-bottom-left-radius: $border-radius-10;
+                }
+                .profile-cover-button {
+                    position: absolute;
+                    bottom: 20px;
+                    right: 20px;
+                    z-index: 40;
+                    label {
+                        background-color: $bg-black;
+                        color: $color-white;
+                        span {
+                            margin-left: $mar-10;
+                        }
+                    }
+                }
             }
             .profile-head-user {
                 display: flex;
@@ -25,14 +68,32 @@
                     width: 20%;
                     position: relative;
                     bottom: 70px;
-                    div {
+                    cursor: pointer;
+                    .profile-avatar-frame {
                         position: relative;
                         width: 180px;
                         height: 180px;
                         margin: 0 auto;
                         border-radius: $border-radius-100;
-                        background-color: $bg-gray;
                         border: 5px solid $color-white;
+                        background-size: contain !important;
+                        background-repeat: no-repeat !important;
+                        background-position: center center !important;
+                        object-fit: contain !important;
+                        .profile-avatar-button {
+                            position: absolute;
+                            top: 120px;
+                            right: 0px;
+                            z-index: 40;
+                            label {
+                                background-color: $bg-black;
+                                color: $color-white;
+                                font-size: $fs-12;
+                                span {
+                                    margin-left: $mar-10;
+                                }
+                            }
+                        }
                     }
                 }
                 .profile-basic-info {
@@ -165,6 +226,9 @@
 }
 
 @media screen and (max-width: 880px) {
+    .save-upload-modal {
+        top: 50px;
+    }
     .profile {
         .profile-head {
             .profile-head-container {
@@ -211,7 +275,7 @@
     }
 }
 
-@media screen and (max-width: 300px) {
+@media screen and (max-width: 450px) {
     .profile {
         .profile-head {
             height: 450px;
