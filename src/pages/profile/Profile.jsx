@@ -20,6 +20,7 @@ import {
   hideLoadingAction,
   showLoadingAction,
 } from "../../store/actions/loadingActions";
+import Skeleton from "react-loading-skeleton";
 
 library.add(faCamera);
 
@@ -37,6 +38,7 @@ export default function Profile() {
     type: "",
   });
   const showLoading = useSelector((state) => state.loadingReducer.showLoading);
+  const [uploadLoading, setUploadLoading] = useState(false);
 
   useEffect(() => {
     setSearchParams({ tab: selectedTab });
@@ -87,7 +89,7 @@ export default function Profile() {
       formData.append("userId", userDetail.id);
       formData.append(imageType, blobImage);
       try {
-        dispatch(showLoadingAction());
+        setUploadLoading(true);
         let result;
         if (imageType === "avatar") {
           result = await userService.updateAvatar(formData);
@@ -102,7 +104,7 @@ export default function Profile() {
       } catch (error) {
         toast.error(error.data?.message);
       } finally {
-        dispatch(hideLoadingAction());
+        setUploadLoading(false);
       }
     }
   };
@@ -116,7 +118,7 @@ export default function Profile() {
             Cancel
           </Button>
           <Button
-            loading={showLoading}
+            loading={uploadLoading}
             type="primary"
             onClick={handleSaveImage}
           >
@@ -128,48 +130,65 @@ export default function Profile() {
         <div className="profile-head">
           <div className="profile-head-container">
             <div className="profile-head-cover">
-              <Zoom style={{height: "100%"}}>
-                <img src={displayCover()} alt={displayCover()} />
-              </Zoom>
-              {!saveUpload.isUpload && (
-                <div className="profile-cover-button">
-                  <label htmlFor="cover" className="btn">
-                    <FontAwesomeIcon icon="fa-camera" />
-                    <span className="d-md-inline d-none">Change cover</span>
-                  </label>
-                  <input
-                    type="file"
-                    name="cover"
-                    id="cover"
-                    hidden
-                    onChange={handleUploadImage}
-                  />
-                </div>
-              )}
-            </div>
-            <div className="profile-head-user">
-              <div className="profile-avatar">
-                <div
-                  className="profile-avatar-frame"
-                  style={{
-                    background: `url(${displayAvatar()}), white`,
-                  }}
-                >
+              {showLoading ? (
+                <Skeleton width={"100%"} height={"100%"} />
+              ) : (
+                <>
+                  <Zoom style={{ height: "100%" }}>
+                    <img src={displayCover()} alt={displayCover()} />
+                  </Zoom>
                   {!saveUpload.isUpload && (
-                    <div className="profile-avatar-button">
-                      <label htmlFor="avatar" className="btn">
+                    <div className="profile-cover-button">
+                      <label htmlFor="cover" className="btn">
                         <FontAwesomeIcon icon="fa-camera" />
+                        <span className="d-md-inline d-none">Change cover</span>
                       </label>
                       <input
                         type="file"
-                        name="avatar"
-                        id="avatar"
+                        name="cover"
+                        id="cover"
                         hidden
                         onChange={handleUploadImage}
                       />
                     </div>
                   )}
-                </div>
+                </>
+              )}
+            </div>
+            <div className="profile-head-user">
+              <div className="profile-avatar">
+                {showLoading ? (
+                  <Skeleton
+                    width={"180px"}
+                    height={"180px"}
+                    borderRadius={"50%"}
+                    style={{ border: "5px solid white" }}
+                  />
+                ) : (
+                  <>
+                    <div
+                      className="profile-avatar-frame"
+                      style={{
+                        background: `url(${displayAvatar()}), white`,
+                      }}
+                    >
+                      {!saveUpload.isUpload && (
+                        <div className="profile-avatar-button">
+                          <label htmlFor="avatar" className="btn">
+                            <FontAwesomeIcon icon="fa-camera" />
+                          </label>
+                          <input
+                            type="file"
+                            name="avatar"
+                            id="avatar"
+                            hidden
+                            onChange={handleUploadImage}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
               </div>
               <div className="profile-basic-info">
                 <h3>{userDetail?.username}</h3>

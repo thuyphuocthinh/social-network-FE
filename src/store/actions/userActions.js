@@ -65,7 +65,9 @@ export const userDetailAction = (userId) => {
     } catch (error) {
       toast.error(error.data.message);
     } finally {
-      dispatch(hideLoadingAction());
+      setTimeout(() => {
+        dispatch(hideLoadingAction());
+      }, 2000);
     }
   };
 };
