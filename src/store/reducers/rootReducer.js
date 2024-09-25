@@ -3,6 +3,7 @@ import { userReducer } from "./userReducer";
 import { persistReducer } from "redux-persist";
 import { tabReducer } from "./tabReducer";
 import { loadingReducer } from "./loadingReducer";
+import { postReducer } from "./postReducer";
 import autoMergeLevel2 from "redux-persist/es/stateReconciler/autoMergeLevel2";
 import storage from "redux-persist/lib/storage";
 
@@ -29,4 +30,5 @@ export const rootReducer = combineReducers({
   tabReducer: persistReducer(tabPersistConfig, tabReducer),
   // not persisted reducers
   loadingReducer,
+  postReducer,
 });

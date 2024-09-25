@@ -1,7 +1,13 @@
-import { HIDE_LOADING, SHOW_LOADING } from "../actionTypes/loadingActionTypes";
+import {
+  HIDE_LAZY_LOADING,
+  HIDE_LOADING,
+  SHOW_LAZY_LOADING,
+  SHOW_LOADING,
+} from "../actionTypes/loadingActionTypes";
 
 const initialState = {
   showLoading: false,
+  lazyLoading: false,
 };
 
 export const loadingReducer = (state = initialState, action) => {
@@ -17,6 +23,20 @@ export const loadingReducer = (state = initialState, action) => {
       return {
         ...state,
         showLoading: false,
+      };
+    }
+
+    case SHOW_LAZY_LOADING: {
+      return {
+        ...state,
+        lazyLoading: true,
+      };
+    }
+
+    case HIDE_LAZY_LOADING: {
+      return {
+        ...state,
+        lazyLoading: false,
       };
     }
 

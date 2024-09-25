@@ -16,11 +16,8 @@ import { userService } from "../../services/UserService";
 import { toast } from "react-toastify";
 import Zoom from "react-medium-image-zoom";
 import { Button } from "antd";
-import {
-  hideLoadingAction,
-  showLoadingAction,
-} from "../../store/actions/loadingActions";
 import Skeleton from "react-loading-skeleton";
+import { setPostsByUserAction } from "../../store/actions/postActions";
 
 library.add(faCamera);
 
@@ -39,7 +36,7 @@ export default function Profile() {
   });
   const showLoading = useSelector((state) => state.loadingReducer.showLoading);
   const [uploadLoading, setUploadLoading] = useState(false);
-
+  
   useEffect(() => {
     setSearchParams({ tab: selectedTab });
     dispatch(userDetailAction(userId));

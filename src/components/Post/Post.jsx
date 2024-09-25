@@ -15,7 +15,7 @@ library.add(faEllipsis, faThumbsUp, faMessage, faShare);
 export default function Post(props) {
   const { username, post } = props;
   return (
-    <div className="post">
+    <div className="post" key={post.id}>
       <div className="post-container">
         <>
           <div className="post-header">
