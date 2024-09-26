@@ -1,3 +1,4 @@
+import { SKIP_ITEM } from "../../config/constant";
 import {
   CANNOT_LOAD_MORE,
   RESET_POSTS_BY_USER,
@@ -17,6 +18,7 @@ export const postReducer = (state = initialState, action) => {
     case SET_POSTS_BY_USER: {
       return {
         ...state,
+        loadMore: true,
         postsByUser: {
           user: action.payload.user,
           posts: [...state.postsByUser.posts, ...action.payload.posts],
@@ -32,7 +34,7 @@ export const postReducer = (state = initialState, action) => {
     case SET_POSTS_SKIP_ITEM: {
       return {
         ...state,
-        skipItem: state.skipItem + 5,
+        skipItem: state.skipItem + SKIP_ITEM,
       };
     }
 

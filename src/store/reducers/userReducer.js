@@ -1,4 +1,5 @@
 import {
+  USER_ALL_FRIENDS,
   USER_DETAIL,
   USER_LOGIN,
   USER_LOGOUT,
@@ -10,6 +11,7 @@ const initialState = {
   isLoggedIn: false,
   userLogin: {},
   userDetail: {},
+  userAllFriends: [],
 };
 
 export const userReducer = (state = initialState, action) => {
@@ -42,6 +44,13 @@ export const userReducer = (state = initialState, action) => {
       return {
         ...state,
         userDetail: action.payload,
+      };
+    }
+
+    case USER_ALL_FRIENDS: {
+      return {
+        ...state,
+        userAllFriends: action.payload,
       };
     }
 

@@ -18,6 +18,10 @@ class UserService extends BaseService {
   updateCover(updateInfo) {
     return axiosInstanceFormData.patch(`${DOMAIN}/users/updateCover`, updateInfo);
   }
+
+  getAllFriends(userId, skipItem) {
+    return this.get(`${DOMAIN}/users/getAllFriends/${userId}/${skipItem}`);
+  }
 }
 
 export const userService = new UserService();

@@ -27,6 +27,7 @@ export default function Profile() {
   const dispatch = useDispatch();
   const selectedTab = useSelector((state) => state.tabReducer.selectedTab);
   const userDetail = useSelector((state) => state.userReducer.userDetail);
+  const userLogin = useSelector((state) => state.userReducer.userLogin);
   const [blobImage, setBlobImage] = useState(null);
   const [previewCover, setPreviewCover] = useState("");
   const [previewAvatar, setPreviewAvatar] = useState("");
@@ -36,11 +37,12 @@ export default function Profile() {
   });
   const showLoading = useSelector((state) => state.loadingReducer.showLoading);
   const [uploadLoading, setUploadLoading] = useState(false);
-  
+
   useEffect(() => {
     setSearchParams({ tab: selectedTab });
     dispatch(userDetailAction(userId));
-  }, []);
+    dispatch(selectTabAction(PROFILE_TAB.POST));
+  }, [userId]);
 
   const handleChangeTab = (value) => {
     setSearchParams({ tab: value });
@@ -134,7 +136,7 @@ export default function Profile() {
                   <Zoom style={{ height: "100%" }}>
                     <img src={displayCover()} alt={displayCover()} />
                   </Zoom>
-                  {!saveUpload.isUpload && (
+                  {!saveUpload.isUpload && userDetail.id === userLogin.id && (
                     <div className="profile-cover-button">
                       <label htmlFor="cover" className="btn">
                         <FontAwesomeIcon icon="fa-camera" />
@@ -169,32 +171,35 @@ export default function Profile() {
                         background: `url(${displayAvatar()}), white`,
                       }}
                     >
-                      {!saveUpload.isUpload && (
-                        <div className="profile-avatar-button">
-                          <label htmlFor="avatar" className="btn">
-                            <FontAwesomeIcon icon="fa-camera" />
-                          </label>
-                          <input
-                            type="file"
-                            name="avatar"
-                            id="avatar"
-                            hidden
-                            onChange={handleUploadImage}
-                          />
-                        </div>
-                      )}
+                      {!saveUpload.isUpload &&
+                        userDetail.id === userLogin.id && (
+                          <div className="profile-avatar-button">
+                            <label htmlFor="avatar" className="btn">
+                              <FontAwesomeIcon icon="fa-camera" />
+                            </label>
+                            <input
+                              type="file"
+                              name="avatar"
+                              id="avatar"
+                              hidden
+                              onChange={handleUploadImage}
+                            />
+                          </div>
+                        )}
                     </div>
                   </>
                 )}
               </div>
               <div className="profile-basic-info">
                 <h3>{userDetail?.username}</h3>
-                <p>{userDetail?.listFriends.length} friends</p>
+                {/* <p>{userDetail?.listFriends.length} friends</p> */}
               </div>
-              <div className="profile-actions">
-                <button className="btn btn-friends">Friends</button>
-                <button className="btn btn-message">Message</button>
-              </div>
+              {userLogin.id !== userDetail.id && (
+                <div className="profile-actions">
+                  <button className="btn btn-friends">Friends</button>
+                  <button className="btn btn-message">Message</button>
+                </div>
+              )}
             </div>
             <div className="profile-head-tabs">
               <ul className="profile-tabs-list">
@@ -218,16 +223,18 @@ export default function Profile() {
                     Friends
                   </span>
                 </li>
-                <li className="profile-tab-item">
-                  <span
-                    className={`profile-tab-link ${
-                      selectedTab === PROFILE_TAB.SETTINGS ? "active" : ""
-                    }`}
-                    onClick={() => handleChangeTab("settings")}
-                  >
-                    Settings
-                  </span>
-                </li>
+                {userLogin.id === userDetail.id && (
+                  <li className="profile-tab-item">
+                    <span
+                      className={`profile-tab-link ${
+                        selectedTab === PROFILE_TAB.SETTINGS ? "active" : ""
+                      }`}
+                      onClick={() => handleChangeTab("settings")}
+                    >
+                      Settings
+                    </span>
+                  </li>
+                )}
               </ul>
             </div>
           </div>

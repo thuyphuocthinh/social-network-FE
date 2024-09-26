@@ -13,3 +13,5 @@ export const PROFILE_TAB = {
   FRIENDS: "friends",
   SETTINGS: "settings",
 };
+
+export const SKIP_ITEM = 4;

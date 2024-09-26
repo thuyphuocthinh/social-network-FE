@@ -3,7 +3,7 @@ import Post from "../../components/Post/Post";
 import { NavLink, useParams, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectTabAction } from "../../store/actions/tabActions";
-import { PROFILE_TAB } from "../../config/constant";
+import { PROFILE_TAB, SKIP_ITEM } from "../../config/constant";
 import Skeleton from "react-loading-skeleton";
 import { LoadingOutlined } from "@ant-design/icons";
 import {
@@ -20,20 +20,20 @@ export default function ProfilePostTab() {
   const postsByUser = useSelector((state) => state.postReducer.postsByUser);
   const [skipItem, setSkipItem] = useState(0);
   const { userId } = useParams();
-  const loadMore = useSelector(state => state.postReducer.loadMore);
+  const loadMore = useSelector((state) => state.postReducer.loadMore);
 
-  console.log("loadMore: ", loadMore);
-
+  
   useEffect(() => {
-    dispatch(setPostsByUserAction(userId, skipItem));
+    setSkipItem(0);
+    dispatch(setPostsByUserAction(userId, 0));
     return () => {
       dispatch(resetPostsByUserAction());
     };
-  }, []);
+  }, [userId]);
 
   const fetchData = () => {
-    setSkipItem(skipItem + 2);
-    dispatch(setPostsByUserAction(userId, skipItem + 2));
+    setSkipItem(skipItem + SKIP_ITEM);
+    dispatch(setPostsByUserAction(userId, skipItem + SKIP_ITEM));
   };
 
   return (
@@ -62,7 +62,7 @@ export default function ProfilePostTab() {
               {userDetail.listFriends?.map((friend, index) => {
                 return (
                   <div className="profile-friends-item" key={friend._id}>
-                    <a className="profile-friends-link">
+                    <NavLink className="profile-friends-link" to={`/profile/${friend._id}`}>
                       <img
                         src={friend.avatar}
                         alt={friend.username}
@@ -71,7 +71,7 @@ export default function ProfilePostTab() {
                       <span className="profile-friends-name">
                         {friend.username}
                       </span>
-                    </a>
+                    </NavLink>
                   </div>
                 );
               })}
@@ -104,7 +104,11 @@ export default function ProfilePostTab() {
           dataLength={postsByUser.posts} //This is important field to render the next data
           next={fetchData}
           hasMore={loadMore}
-          loader={<LoadingOutlined className="text-center"/>}
+          loader={
+            <div className="text-center">
+              <LoadingOutlined />
+            </div>
+          }
         ></InfiniteScroll>
       </div>
     </Fragment>

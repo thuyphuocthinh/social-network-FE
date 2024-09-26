@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import {
+  USER_ALL_FRIENDS,
   USER_DETAIL,
   USER_LOGIN,
   USER_LOGOUT,
@@ -7,7 +8,12 @@ import {
   USER_UPDATE,
 } from "../actionTypes/userActionTypes";
 import { userService } from "../../services/UserService";
-import { hideLoadingAction, showLoadingAction } from "./loadingActions";
+import {
+  hideLazyLoadingAction,
+  hideLoadingAction,
+  showLazyLoadingAction,
+  showLoadingAction,
+} from "./loadingActions";
 import { STATUS_CODE } from "../../config/constant";
 
 export const userLoginAction = (userInfo) => {
@@ -67,7 +73,29 @@ export const userDetailAction = (userId) => {
     } finally {
       setTimeout(() => {
         dispatch(hideLoadingAction());
-      }, 2000);
+      }, 1000);
+    }
+  };
+};
+
+export const userAllFriendsAction = (userId, skipItem) => {
+  return async (dispatch) => {
+    try {
+      dispatch(showLazyLoadingAction());
+      const result = await userService.getAllFriends(userId, skipItem);
+      if (result.status === STATUS_CODE.SUCCESS) {
+        dispatch({
+          type: USER_ALL_FRIENDS,
+          payload: result.data.data,
+        });
+        toast.success(result.data.message);
+      }
+    } catch (error) {
+      toast.error(error.data.message);
+    } finally {
+      setTimeout(() => {
+        dispatch(hideLazyLoadingAction());
+      }, 500);
     }
   };
 };

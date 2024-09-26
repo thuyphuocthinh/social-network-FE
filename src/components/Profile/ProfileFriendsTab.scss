@@ -1,0 +1,65 @@
+@import "../../Variable.scss";
+
+.friend-tab {
+    width: 100%;
+    .friend-tab-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        row-gap: $gap-10;
+        flex-wrap: wrap;
+        .friend-item {
+            border-radius: $border-radius-5;
+            box-shadow: 0 0 2px 1px rgba(0, 0, 0, .2);
+            width: 24%;
+            .friend-link {
+                padding: $pd-10;
+                display: flex;
+                align-items: center;
+                gap: $gap-10;
+                cursor: pointer;
+                &:hover {
+                    background-color: $bg-gray;
+                    border-radius: $border-radius-5;
+                }
+                .friend-avatar {
+                    display: block;
+                    width: 60px;
+                    height: 60px;
+                    background-color: $bg-gray-100;
+                    border-radius: $border-radius-100;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 880px) {
+    .friend-tab {
+        .friend-tab-container {
+            .friend-item {
+                width: 32%;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .friend-tab {
+        .friend-tab-container {
+            .friend-item {
+                width: 48%;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .friend-tab {
+        .friend-tab-container {
+            .friend-item {
+                width: 95%;
+            }
+        }
+    }
+}
